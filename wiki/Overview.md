@@ -8,7 +8,6 @@
 
 ### Core Documentation
 
-- **[README](../README.md)** - Main project documentation with technology stack and team information
 - **[Project Declaration](Project-Declaration.md)** - Official project declaration (M426), team members, challenges, and requirements
 - **[Scenario](Szenario.md)** - Business context, company background, and project scope
 
@@ -22,13 +21,10 @@
 
 ### Project Information
 
-| Topic                | Link                                                              |
-| -------------------- | ----------------------------------------------------------------- |
-| Team Members & Roles | [README - Team Section](../README.md#-team)                       |
-| Technology Stack     | [README - Tech Stack](../README.md#️-technologiestack)             |
-| Main Features        | [README - Features](../README.md#hauptfunktionen)                 |
-| Project Goals        | [Scenario - Project Assignment](Szenario.md#3-der-projektauftrag) |
-| Challenges           | [Project Declaration - Challenges](Project-Declaration.md)        |
+| Topic         | Link                                                              |
+| ------------- | ----------------------------------------------------------------- |
+| Project Goals | [Scenario - Project Assignment](Szenario.md#3-der-projektauftrag) |
+| Challenges    | [Project Declaration - Challenges](Project-Declaration.md)        |
 
 ### Development Setup
 
@@ -43,7 +39,6 @@
 
 ```
 super-shop/
-├── README.md                          # Main project documentation
 ├── springboot-backend/                # Spring Boot backend application
 │   ├── src/main/java/                # Java source files
 │   │   └── ch/sbb/kolomiiets/shopsystem/
