@@ -8,9 +8,13 @@ Eine moderne E-Commerce-Plattform für die Rework-Kette, die den Kauf, Verkauf u
 
 ### Frontend Setup
 
+The frontend is built with **Next.js 16**, **TypeScript**, and **Tailwind CSS 4**.
+
 ```bash
 # Repository klonen
 git clone <repository-url>
+
+# Zum Frontend-Verzeichnis wechseln
 cd frontend
 
 # Dependencies installieren
@@ -19,11 +23,14 @@ npm install
 # Development Server starten
 npm run dev
 
-# Build für Production
+# Build prüfen
 npm run build
+```
 
-# Production Server starten
-npm start
+The frontend will be available at:
+
+```txt
+http://localhost:3000
 ```
 
 **Umgebungsvariablen** (`.env.local`):
@@ -31,6 +38,26 @@ npm start
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:8080/api
 NEXT_PUBLIC_APP_NAME=Rework Platform
+```
+
+### Frontend Docker Setup
+
+To start the frontend development environment with Docker, run:
+
+```bash
+docker compose up --build
+```
+
+The frontend will be available at:
+
+```txt
+http://localhost:3000
+```
+
+To stop the container, press `Ctrl + C` or run:
+
+```bash
+docker compose down
 ```
 
 ### Backend Setup
@@ -64,13 +91,16 @@ spring:
 
 ### Docker Setup
 
-```bash
-# Datenbank starten
-docker-compose up -d
+#### Frontend
 
-# Alle Services starten
-docker-compose up --build
+```bash
+cd frontend
+docker compose up --build
 ```
+
+The frontend will be available at `http://localhost:3000`.
+
+> Note: The backend/database Docker setup will be documented separately when the backend compose setup is finalized.
 
 ---
 
@@ -106,7 +136,9 @@ Rework-Kette - Nachhaltiger Handel mit Gebrauchtwaren
 
 ## Technologiestack
 
-#### Frontend Framework: **Next.js 15+**
+#### Frontend Framework: **Next.js 16**
+
+#### Styling Library: **Tailwind CSS 4**
 
 #### Backend Framework: **Spring Boot 3.x**
 
