@@ -2,7 +2,9 @@
 
 ### Frontend
 
-#### Framework: **Next.js 15+**
+#### Frontend Framework: **Next.js 16**
+
+#### Styling Library: **Tailwind CSS 4**
 
 **Entscheidungsbegründung:**
 

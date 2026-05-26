@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Montserrat", Arial, sans-serif;
+
+  --color-brand-black: #111111;
+  --color-brand-white: #f7f7f5;
+  --color-brand-gray: #d9d9d9;
+  --color-brand-text: #6e6e6e;
+  --color-brand-green: #3fae5a;
+}
+
+body {
+  background: var(--color-brand-white);
+  color: var(--color-brand-black);
+  font-family: var(--font-sans);
+}
