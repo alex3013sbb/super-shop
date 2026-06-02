@@ -2,22 +2,24 @@
 
 import Image from "next/image";
 import { Heart } from "lucide-react";
-import { useState } from "react";
+import { useFavorites } from "@/hooks/useFavorites";
 
 type ProductCardProps = {
+  id: number;
   name: string;
   price: number;
-  image: string;
+  imageUrl: string;
 };
 
-export default function ProductCard({ name, price, image }: ProductCardProps) {
-  const [liked, setLiked] = useState(false);
+export default function ProductCard({ id, name, price, imageUrl }: ProductCardProps) {
+  const { toggle, isFavorite } = useFavorites();
+  const liked = isFavorite(id);
 
   return (
     <article className="group">
       <div className="relative aspect-[4/5] overflow-hidden border border-gray-200 bg-[#f4f4f2]">
         <Image
-          src={image}
+          src={imageUrl}
           alt={name}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
@@ -35,10 +37,8 @@ export default function ProductCard({ name, price, image }: ProductCardProps) {
 
         <button
           type="button"
-          onClick={() => setLiked((prev) => !prev)}
-          aria-label={
-            liked ? "Aus Favoriten entfernen" : "Zu Favoriten hinzufügen"
-          }
+          onClick={() => toggle({ id, name, price, imageUrl })}
+          aria-label={liked ? "Aus Favoriten entfernen" : "Zu Favoriten hinzufügen"}
           className="mt-0.5 text-gray-500 transition hover:text-black"
         >
           <Heart

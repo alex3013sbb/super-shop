@@ -4,163 +4,182 @@ import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 import { useMemo, useState } from "react";
 import ProductCard from "@/components/ui/ProductCard";
-
-export type ProductOverviewItem = {
-  id: number;
-  name: string;
-  price: number;
-  category: "men" | "women";
-  subcategory: "Hemden" | "Hosen" | "Jeans" | "Jacken" | "Shorts";
-  image: string;
-};
+import type {
+  FilterOptionsResponse,
+  ProductCategoryKey,
+  ProductColorCode,
+  ProductListResponse,
+  ProductSizeCode,
+  ProductSortKey,
+} from "@/types/api";
 
 type ProductsOverviewClientProps = {
-  products: ProductOverviewItem[];
-  selectedCategory: string;
+  productList: ProductListResponse;
+  filterOptions: FilterOptionsResponse;
+  selectedCategory: ProductCategoryKey;
   q: string;
 };
 
-const subcategoryOptions: ProductOverviewItem["subcategory"][] = [
-  "Hemden",
-  "Hosen",
-  "Jeans",
-  "Jacken",
-  "Shorts",
+const sortOptions: { key: ProductSortKey; label: string }[] = [
+  { key: "featured", label: "Sortieren nach" },
+  { key: "newest", label: "Neueste zuerst" },
+  { key: "price-asc", label: "Preis: Niedrig → Hoch" },
+  { key: "price-desc", label: "Preis: Hoch → Niedrig" },
+  { key: "name-asc", label: "Name: A → Z" },
 ];
 
-const sortOptions = [
-  { key: "featured", label: "Sortieren nach" },
-  { key: "price-asc", label: "Preis: Niedrig -> Hoch" },
-  { key: "price-desc", label: "Preis: Hoch -> Niedrig" },
-  { key: "name-asc", label: "Name: A -> Z" },
-] as const;
+const expandableSections = ["Größe", "Farbe", "Preis", "Kollektion"] as const;
+type ExpandableSection = (typeof expandableSections)[number];
 
-type SortKey = (typeof sortOptions)[number]["key"];
+// human-readable labels for coded values
+const sizeLabels: Record<ProductSizeCode, string> = {
+  XXS: "XXS",
+  XS: "XS",
+  S: "S",
+  M: "M",
+  L: "L",
+  XL: "XL",
+  XXL: "XXL",
+};
 
-function matchesCategory(
-  product: ProductOverviewItem,
-  selectedCategory: string,
-) {
-  if (selectedCategory === "all") {
-    return true;
-  }
-
-  return product.category === selectedCategory;
-}
-
-const expandableOptions = ["Größe", "Farbe", "Preis", "Kollektion"] as const;
-type ExpandableOption = (typeof expandableOptions)[number];
+const colorLabels: Record<ProductColorCode, string> = {
+  black: "Schwarz",
+  white: "Weiss",
+  gray: "Grau",
+  blue: "Blau",
+  green: "Grün",
+  red: "Rot",
+  beige: "Beige",
+};
 
 export default function ProductsOverviewClient({
-  products,
+  productList,
+  filterOptions,
   selectedCategory,
   q,
 }: ProductsOverviewClientProps) {
-  const [selectedSubcategories, setSelectedSubcategories] = useState<
-    Array<ProductOverviewItem["subcategory"]>
-  >([]);
-  const [sortBy, setSortBy] = useState<SortKey>("featured");
+  const [selectedSizes, setSelectedSizes] = useState<ProductSizeCode[]>([]);
+  const [selectedColors, setSelectedColors] = useState<ProductColorCode[]>([]);
+  const [sortBy, setSortBy] = useState<ProductSortKey>("featured");
   const [expandedSections, setExpandedSections] = useState<
-    Set<ExpandableOption>
+    Set<ExpandableSection>
   >(new Set());
+  const [priceMin, setPriceMin] = useState<number>(
+    filterOptions.priceRange.min,
+  );
+  const [priceMax, setPriceMax] = useState<number>(
+    filterOptions.priceRange.max,
+  );
 
-  const filteredAndSortedProducts = useMemo(() => {
-    const normalizedQuery = q.toLowerCase();
+  const displayedProducts = useMemo(() => {
+    let result = productList.items.filter((product) => {
+      const sizeMatch =
+        selectedSizes.length === 0 ||
+        product.availableSizes.some((s) => selectedSizes.includes(s));
+      const colorMatch =
+        selectedColors.length === 0 ||
+        product.availableColors.some((c) => selectedColors.includes(c));
+      const priceMatch = product.price >= priceMin && product.price <= priceMax;
 
-    const filtered = products.filter((product) => {
-      const categoryMatch = matchesCategory(product, selectedCategory);
-      const searchMatch =
-        normalizedQuery.length === 0 ||
-        product.name.toLowerCase().includes(normalizedQuery);
-      const subcategoryMatch =
-        selectedSubcategories.length === 0 ||
-        selectedSubcategories.includes(product.subcategory);
-
-      return categoryMatch && searchMatch && subcategoryMatch;
+      return sizeMatch && colorMatch && priceMatch;
     });
 
     if (sortBy === "price-asc") {
-      return [...filtered].sort((a, b) => a.price - b.price);
+      result = [...result].sort((a, b) => a.price - b.price);
+    } else if (sortBy === "price-desc") {
+      result = [...result].sort((a, b) => b.price - a.price);
+    } else if (sortBy === "name-asc") {
+      result = [...result].sort((a, b) => a.name.localeCompare(b.name));
+    } else if (sortBy === "newest") {
+      result = [...result].sort((a, b) => b.id - a.id);
     }
 
-    if (sortBy === "price-desc") {
-      return [...filtered].sort((a, b) => b.price - a.price);
-    }
-
-    if (sortBy === "name-asc") {
-      return [...filtered].sort((a, b) => a.name.localeCompare(b.name));
-    }
-
-    return filtered;
-  }, [products, q, selectedCategory, selectedSubcategories, sortBy]);
+    return result;
+  }, [
+    productList.items,
+    selectedSizes,
+    selectedColors,
+    sortBy,
+    priceMin,
+    priceMax,
+  ]);
 
   const title =
     selectedCategory === "all" ? "PRODUCTS" : selectedCategory.toUpperCase();
 
-  const toggleSubcategory = (
-    subcategory: ProductOverviewItem["subcategory"],
-  ) => {
-    setSelectedSubcategories((current) => {
-      if (current.includes(subcategory)) {
-        return current.filter((item) => item !== subcategory);
-      }
-
-      return [...current, subcategory];
-    });
-  };
-
-  const toggleSection = (section: ExpandableOption) => {
-    setExpandedSections((current) => {
-      const next = new Set(current);
-      if (next.has(section)) {
-        next.delete(section);
-      } else {
-        next.add(section);
-      }
-      return next;
-    });
-  };
-
   const buildCategoryLink = (category: string) => {
     const params = new URLSearchParams();
-    if (category !== "all") {
-      params.set("category", category);
-    }
-    if (q) {
-      params.set("q", q);
-    }
+    if (category !== "all") params.set("category", category);
+    if (q) params.set("q", q);
     const query = params.toString();
     return query ? `/products?${query}` : "/products";
   };
 
+  const toggleSection = (section: ExpandableSection) => {
+    setExpandedSections((current) => {
+      const next = new Set(current);
+      next.has(section) ? next.delete(section) : next.add(section);
+      return next;
+    });
+  };
+
+  const toggleSize = (size: ProductSizeCode) => {
+    setSelectedSizes((current) =>
+      current.includes(size)
+        ? current.filter((s) => s !== size)
+        : [...current, size],
+    );
+  };
+
+  const toggleColor = (color: ProductColorCode) => {
+    setSelectedColors((current) =>
+      current.includes(color)
+        ? current.filter((c) => c !== color)
+        : [...current, color],
+    );
+  };
+
+  const hasActiveFilters =
+    selectedSizes.length > 0 ||
+    selectedColors.length > 0 ||
+    priceMin !== filterOptions.priceRange.min ||
+    priceMax !== filterOptions.priceRange.max;
+
+  const resetFilters = () => {
+    setSelectedSizes([]);
+    setSelectedColors([]);
+    setPriceMin(filterOptions.priceRange.min);
+    setPriceMax(filterOptions.priceRange.max);
+  };
+
+  const activeSizes = filterOptions.sizes.filter((s) => s.count > 0);
+  const activeColors = filterOptions.colors.filter((c) => c.count > 0);
+  const activeCollections = filterOptions.collections.filter(
+    (c) => c.count > 0,
+  );
+
   return (
     <section className="grid gap-8 lg:grid-cols-[220px_1fr]">
-      <aside className="border-b border-gray-200 pb-6 lg:border-b-0 lg:border-r lg:pr-8 lg:pb-0">
-        <h2 className="text-sm font-bold uppercase tracking-[0.12em]">
-          Filtern
-        </h2>
-
-        <div className="mt-5 border-b border-gray-200 pb-5">
-          <p className="text-sm font-semibold">Kategorie</p>
-          <ul className="mt-3 space-y-2.5">
-            {subcategoryOptions.map((option) => (
-              <li key={option}>
-                <label className="flex cursor-pointer items-center gap-2.5 text-sm text-gray-700">
-                  <input
-                    type="checkbox"
-                    checked={selectedSubcategories.includes(option)}
-                    onChange={() => toggleSubcategory(option)}
-                    className="h-4 w-4 rounded-sm border-gray-300 text-black focus:ring-black"
-                  />
-                  <span>{option}</span>
-                </label>
-              </li>
-            ))}
-          </ul>
+      {/* ── Sidebar ── */}
+      <aside className="border-b border-gray-200 pb-6 lg:border-b-0 lg:border-r lg:pb-0 lg:pr-8">
+        <div className="flex items-center justify-between">
+          <h2 className="text-sm font-bold uppercase tracking-[0.12em]">
+            Filtern
+          </h2>
+          {hasActiveFilters && (
+            <button
+              type="button"
+              onClick={resetFilters}
+              className="text-xs text-gray-500 underline underline-offset-2 hover:text-black transition"
+            >
+              Zurücksetzen
+            </button>
+          )}
         </div>
 
-        <div className="divide-y divide-gray-200">
-          {expandableOptions.map((sectionName) => {
+        {/* expandable filter sections */}
+        <div className="mt-4 divide-y divide-gray-200">
+          {expandableSections.map((sectionName) => {
             const isExpanded = expandedSections.has(sectionName);
             return (
               <div key={sectionName}>
@@ -173,30 +192,99 @@ export default function ProductsOverviewClient({
                   <ChevronDown
                     size={16}
                     strokeWidth={2}
-                    className={`transition-transform ${isExpanded ? "rotate-180" : ""}`}
+                    className={`transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`}
                   />
                 </button>
-                {isExpanded && (
-                  <div className="pb-4 text-sm text-gray-600">
+
+                {isExpanded && sectionName === "Größe" && (
+                  <div className="pb-4">
                     <ul className="space-y-2">
-                      <li>
-                        <label className="flex cursor-pointer items-center gap-2">
-                          <input type="checkbox" className="h-3 w-3 rounded" />{" "}
-                          Option 1
-                        </label>
-                      </li>
-                      <li>
-                        <label className="flex cursor-pointer items-center gap-2">
-                          <input type="checkbox" className="h-3 w-3 rounded" />{" "}
-                          Option 2
-                        </label>
-                      </li>
-                      <li>
-                        <label className="flex cursor-pointer items-center gap-2">
-                          <input type="checkbox" className="h-3 w-3 rounded" />{" "}
-                          Option 3
-                        </label>
-                      </li>
+                      {activeSizes.map(({ code, count }) => (
+                        <li key={code}>
+                          <label className="flex cursor-pointer items-center gap-2.5 text-sm text-gray-700">
+                            <input
+                              type="checkbox"
+                              checked={selectedSizes.includes(code)}
+                              onChange={() => toggleSize(code)}
+                              className="h-4 w-4 rounded-sm border-gray-300"
+                            />
+                            <span>{sizeLabels[code]}</span>
+                            <span className="ml-auto text-xs text-gray-400">
+                              ({count})
+                            </span>
+                          </label>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {isExpanded && sectionName === "Farbe" && (
+                  <div className="pb-4">
+                    <ul className="space-y-2">
+                      {activeColors.map(({ code, count }) => (
+                        <li key={code}>
+                          <label className="flex cursor-pointer items-center gap-2.5 text-sm text-gray-700">
+                            <input
+                              type="checkbox"
+                              checked={selectedColors.includes(code)}
+                              onChange={() => toggleColor(code)}
+                              className="h-4 w-4 rounded-sm border-gray-300"
+                            />
+                            <span>{colorLabels[code]}</span>
+                            <span className="ml-auto text-xs text-gray-400">
+                              ({count})
+                            </span>
+                          </label>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {isExpanded && sectionName === "Preis" && (
+                  <div className="pb-4 space-y-3">
+                    <div className="flex items-center gap-2 text-sm text-gray-700">
+                      <span>CHF</span>
+                      <input
+                        type="number"
+                        min={filterOptions.priceRange.min}
+                        max={priceMax}
+                        value={priceMin}
+                        onChange={(e) => setPriceMin(Number(e.target.value))}
+                        className="w-20 rounded border border-gray-300 px-2 py-1 text-sm outline-none"
+                      />
+                      <span>–</span>
+                      <input
+                        type="number"
+                        min={priceMin}
+                        max={filterOptions.priceRange.max}
+                        value={priceMax}
+                        onChange={(e) => setPriceMax(Number(e.target.value))}
+                        className="w-20 rounded border border-gray-300 px-2 py-1 text-sm outline-none"
+                      />
+                    </div>
+                    <p className="text-xs text-gray-400">
+                      Verfügbar: CHF {filterOptions.priceRange.min} – CHF{" "}
+                      {filterOptions.priceRange.max}
+                    </p>
+                  </div>
+                )}
+
+                {isExpanded && sectionName === "Kollektion" && (
+                  <div className="pb-4">
+                    <ul className="space-y-2">
+                      {activeCollections.map(({ code, label, count }) => (
+                        <li
+                          key={code}
+                          className="flex items-center justify-between text-sm text-gray-700"
+                        >
+                          <span className="capitalize">{label}</span>
+                          <span className="text-xs text-gray-400">
+                            ({count})
+                          </span>
+                        </li>
+                      ))}
                     </ul>
                   </div>
                 )}
@@ -206,18 +294,21 @@ export default function ProductsOverviewClient({
         </div>
       </aside>
 
+      {/* ── Main content ── */}
       <div>
-        <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div>
             <h1 className="mb-4 text-4xl font-black uppercase tracking-tight">
               {title}
             </h1>
             <div className="flex flex-wrap gap-2">
-              {[
-                ["all", "ALL"],
-                ["men", "MEN"],
-                ["women", "WOMEN"],
-              ].map(([key, label]) => {
+              {(
+                [
+                  ["all", "ALL"],
+                  ["men", "MEN"],
+                  ["women", "WOMEN"],
+                ] as [string, string][]
+              ).map(([key, label]) => {
                 const isActive = selectedCategory === key;
                 return (
                   <Link
@@ -236,12 +327,14 @@ export default function ProductsOverviewClient({
             </div>
           </div>
 
-          <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
-            <label htmlFor="sort-by">Sortieren nach</label>
+          <div className="flex items-center gap-2 text-sm text-gray-700">
+            <label htmlFor="sort-by" className="font-semibold">
+              Sortieren nach
+            </label>
             <select
               id="sort-by"
               value={sortBy}
-              onChange={(event) => setSortBy(event.target.value as SortKey)}
+              onChange={(e) => setSortBy(e.target.value as ProductSortKey)}
               className="rounded border border-gray-300 bg-white px-2 py-1.5 text-sm text-black outline-none"
             >
               {sortOptions.map((option) => (
@@ -253,18 +346,23 @@ export default function ProductsOverviewClient({
           </div>
         </div>
 
+        <p className="mb-5 text-xs text-gray-500">
+          {displayedProducts.length} Ergebnisse
+        </p>
+
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
-          {filteredAndSortedProducts.map((product) => (
+          {displayedProducts.map((product) => (
             <ProductCard
               key={product.id}
+              id={product.id}
               name={product.name}
               price={product.price}
-              image={product.image}
+              imageUrl={product.imageUrl}
             />
           ))}
         </div>
 
-        {filteredAndSortedProducts.length === 0 && (
+        {displayedProducts.length === 0 && (
           <div className="mt-6 rounded-lg border border-dashed border-gray-300 p-10 text-center text-sm text-gray-600">
             Keine Produkte gefunden. Versuche andere Filter oder Suchbegriffe.
           </div>

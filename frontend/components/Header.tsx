@@ -4,11 +4,13 @@ import Link from "next/link";
 import { type FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Menu, Search, User, Heart, ShoppingBag } from "lucide-react";
+import { useFavorites } from "@/hooks/useFavorites";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const router = useRouter();
+  const { favorites } = useFavorites();
 
   const handleSearchSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -62,8 +64,13 @@ export default function Header() {
             <User size={20} strokeWidth={1.7} />
           </Link>
 
-          <Link href="/favorites">
+          <Link href="/favorites" className="relative">
             <Heart size={20} strokeWidth={1.7} />
+            {favorites.length > 0 && (
+              <span className="absolute -right-1.5 -top-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-black text-[9px] font-bold text-white">
+                {favorites.length > 9 ? "9+" : favorites.length}
+              </span>
+            )}
           </Link>
 
           <Link href="/cart">
