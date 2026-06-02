@@ -15,9 +15,7 @@ export default function Header() {
 
   return (
     <header className="border-b border-gray-200 bg-white">
-      {/* Верхняя панель */}
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-8">
-        {/* Лого и меню */}
         <div className="flex items-center gap-4">
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -34,7 +32,6 @@ export default function Header() {
           </Link>
         </div>
 
-        {/* Поиск */}
         <div className="hidden items-center gap-2 md:flex">
           <input
             type="text"
@@ -48,7 +45,6 @@ export default function Header() {
           />
         </div>
 
-        {/* Иконки */}
         <div className="flex items-center gap-5 text-gray-700">
           <Link href="/login">
             <User size={20} strokeWidth={1.7} />
@@ -64,7 +60,6 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Выпадающее меню */}
       {isMenuOpen && (
         <div className="border-t border-gray-200">
           <nav className="px-8 py-6">
@@ -77,9 +72,6 @@ export default function Header() {
                 <Link href="/women">WOMEN</Link>
               </li>
 
-              <li>
-                <Link href="/kids">KIDS</Link>
-              </li>
             </ul>
           </nav>
         </div>

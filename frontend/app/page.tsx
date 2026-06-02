@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
 const slides = [
   {
@@ -54,9 +55,12 @@ export default function Home() {
             {slide.season}
           </p>
 
-          <button className="mt-10 w-fit bg-gray-200 px-10 py-4 text-sm font-bold hover:bg-gray-300">
+          <Link
+            href="/collections"
+            className="mt-10 w-fit bg-gray-200 px-10 py-4 text-sm font-bold hover:bg-gray-300"
+          >
             {slide.button} →
-          </button>
+          </Link>
         </div>
 
         {slide.images.map((image, index) => (
