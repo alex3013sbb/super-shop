@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { type FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   Menu,
   Search,
@@ -12,6 +13,21 @@ import {
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const router = useRouter();
+
+  const handleSearchSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const query = searchTerm.trim();
+
+    if (!query) {
+      router.push("/products");
+      return;
+    }
+
+    router.push(`/products?q=${encodeURIComponent(query)}`);
+  };
 
   return (
     <header className="border-b border-gray-200 bg-white">
@@ -35,10 +51,15 @@ export default function Header() {
         </div>
 
         {/* Поиск */}
-        <div className="hidden items-center gap-2 md:flex">
+        <form
+          onSubmit={handleSearchSubmit}
+          className="hidden items-center gap-2 md:flex"
+        >
           <input
             type="text"
             placeholder="Suche nach Produkt, Kollektion..."
+            value={searchTerm}
+            onChange={(event) => setSearchTerm(event.target.value)}
             className="w-72 border-none bg-transparent text-xs outline-none placeholder:text-gray-400"
           />
           <Search
@@ -46,7 +67,7 @@ export default function Header() {
             strokeWidth={1.7}
             className="text-gray-500"
           />
-        </div>
+        </form>
 
         {/* Иконки */}
         <div className="flex items-center gap-5 text-gray-700">
@@ -70,11 +91,11 @@ export default function Header() {
           <nav className="px-8 py-6">
             <ul className="space-y-3 text-sm font-medium uppercase tracking-wide">
               <li>
-                <Link href="/men">MEN</Link>
+                <Link href="/products?category=men">MEN</Link>
               </li>
 
               <li>
-                <Link href="/women">WOMEN</Link>
+                <Link href="/products?category=women">WOMEN</Link>
               </li>
 
               <li>
