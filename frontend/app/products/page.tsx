@@ -95,7 +95,9 @@ function buildCategoryHref(category: string, q: string) {
 
 export default function ProductsPage() {
   const searchParams = useSearchParams();
-  const selectedCategory = (searchParams.get("category") || "all").toLowerCase();
+  const selectedCategory = (
+    searchParams.get("category") || "all"
+  ).toLowerCase();
   const q = (searchParams.get("q") || "").trim().toLowerCase();
 
   const filteredProducts = products.filter((product) => {
@@ -209,7 +211,8 @@ export default function ProductsPage() {
 
           {filteredProducts.length === 0 && (
             <div className="col-span-full rounded-lg border border-dashed border-gray-300 p-10 text-center text-sm text-gray-600">
-              Keine Produkte gefunden. Versuche eine andere Suche oder Kategorie.
+              Keine Produkte gefunden. Versuche eine andere Suche oder
+              Kategorie.
             </div>
           )}
         </div>

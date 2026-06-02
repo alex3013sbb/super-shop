@@ -3,13 +3,7 @@
 import Link from "next/link";
 import { type FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import {
-  Menu,
-  Search,
-  User,
-  Heart,
-  ShoppingBag,
-} from "lucide-react";
+import { Menu, Search, User, Heart, ShoppingBag } from "lucide-react";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -42,10 +36,7 @@ export default function Header() {
             <Menu size={20} strokeWidth={1.7} />
           </button>
 
-          <Link
-            href="/"
-            className="text-sm font-bold uppercase tracking-wider"
-          >
+          <Link href="/" className="text-sm font-bold uppercase tracking-wider">
             SUPER SHOP
           </Link>
         </div>
@@ -62,11 +53,7 @@ export default function Header() {
             onChange={(event) => setSearchTerm(event.target.value)}
             className="w-72 border-none bg-transparent text-xs outline-none placeholder:text-gray-400"
           />
-          <Search
-            size={17}
-            strokeWidth={1.7}
-            className="text-gray-500"
-          />
+          <Search size={17} strokeWidth={1.7} className="text-gray-500" />
         </form>
 
         {/* Иконки */}
