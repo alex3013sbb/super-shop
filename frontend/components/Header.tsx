@@ -27,9 +27,9 @@ export default function Header() {
 
   return (
     <header className="border-b border-gray-200 bg-white">
-      {/* Верхняя панель */}
+      {/* Top bar */}
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-8">
-        {/* Лого и меню */}
+        {/* Logo and menu */}
         <div className="flex items-center gap-4">
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -43,7 +43,7 @@ export default function Header() {
           </Link>
         </div>
 
-        {/* Поиск */}
+        {/* Search */}
         <form
           onSubmit={handleSearchSubmit}
           className="hidden items-center gap-2 md:flex"
@@ -58,7 +58,7 @@ export default function Header() {
           <Search size={17} strokeWidth={1.7} className="text-gray-500" />
         </form>
 
-        {/* Иконки */}
+        {/* Icons */}
         <div className="flex items-center gap-5 text-gray-700">
           <Link href="/login">
             <User size={20} strokeWidth={1.7} />
@@ -79,7 +79,7 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Выпадающее меню */}
+      {/* Dropdown menu */}
       {isMenuOpen && (
         <div className="border-t border-gray-200">
           <nav className="px-8 py-6">
