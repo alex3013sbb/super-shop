@@ -38,22 +38,22 @@ export default function Footer() {
             <h3 className="mb-4 font-semibold uppercase">About Us</h3>
             <ul className="space-y-2 text-gray-600">
               <li>
-                <Link href="/about" className={linkClass}>
+                <Link href="/about#unternehmen" className={linkClass}>
                   Unternehmen
                 </Link>
               </li>
               <li>
-                <Link href="/sustainability" className={linkClass}>
+                <Link href="/about#nachhaltigkeit" className={linkClass}>
                   Nachhaltigkeit
                 </Link>
               </li>
               <li>
-                <Link href="/careers" className={linkClass}>
+                <Link href="/about#karriere" className={linkClass}>
                   Karriere
                 </Link>
               </li>
               <li>
-                <Link href="/press" className={linkClass}>
+                <Link href="/about#presse" className={linkClass}>
                   Presse
                 </Link>
               </li>

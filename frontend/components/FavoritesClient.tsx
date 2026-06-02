@@ -25,7 +25,7 @@ export default function FavoritesClient() {
           <button
             type="button"
             onClick={removeAll}
-            className="flex items-center gap-1.5 text-sm text-gray-500 transition hover:text-black"
+            className="flex cursor-pointer items-center gap-1.5 text-sm text-gray-500 transition hover:text-black"
           >
             <Trash2 size={14} strokeWidth={1.8} />
             Alle entfernen

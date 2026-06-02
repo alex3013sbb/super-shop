@@ -39,7 +39,7 @@ export default function ProductCard({ id, name, price, imageUrl }: ProductCardPr
           type="button"
           onClick={() => toggle({ id, name, price, imageUrl })}
           aria-label={liked ? "Aus Favoriten entfernen" : "Zu Favoriten hinzufügen"}
-          className="mt-0.5 text-gray-500 transition hover:text-black"
+          className="mt-0.5 cursor-pointer text-gray-500 transition hover:text-black"
         >
           <Heart
             size={16}

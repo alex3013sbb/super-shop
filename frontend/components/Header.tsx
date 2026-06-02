@@ -34,6 +34,7 @@ export default function Header() {
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle menu"
+            className="cursor-pointer"
           >
             <Menu size={20} strokeWidth={1.7} />
           </button>
@@ -46,16 +47,20 @@ export default function Header() {
         {/* Search */}
         <form
           onSubmit={handleSearchSubmit}
-          className="hidden items-center gap-2 md:flex"
+          className="group hidden cursor-text items-center gap-2 rounded-full border border-transparent px-4 py-2 transition-all duration-200 hover:border-gray-200 hover:bg-gray-100 focus-within:border-gray-300 focus-within:bg-gray-100 md:flex"
         >
+          <Search
+            size={17}
+            strokeWidth={1.7}
+            className="shrink-0 text-gray-400 transition-colors duration-200 group-hover:text-gray-700 group-focus-within:text-gray-700"
+          />
           <input
             type="text"
             placeholder="Suche nach Produkt, Kollektion..."
             value={searchTerm}
             onChange={(event) => setSearchTerm(event.target.value)}
-            className="w-72 border-none bg-transparent text-xs outline-none placeholder:text-gray-400"
+            className="w-72 border-none bg-transparent text-xs outline-none placeholder:text-gray-400 transition-all duration-200 focus:w-96"
           />
-          <Search size={17} strokeWidth={1.7} className="text-gray-500" />
         </form>
 
         {/* Icons */}
@@ -80,25 +85,27 @@ export default function Header() {
       </div>
 
       {/* Dropdown menu */}
-      {isMenuOpen && (
-        <div className="border-t border-gray-200">
-          <nav className="px-8 py-6">
-            <ul className="space-y-3 text-sm font-medium uppercase tracking-wide">
-              <li>
-                <Link href="/products?category=men">MEN</Link>
-              </li>
+      <div
+        className={`overflow-hidden border-gray-200 transition-all duration-300 ease-in-out ${
+          isMenuOpen ? "max-h-64 border-t opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
+        <nav className="px-8 py-6">
+          <ul className="space-y-3 text-sm font-medium uppercase tracking-wide">
+            <li>
+              <Link href="/products?category=men">MEN</Link>
+            </li>
 
-              <li>
-                <Link href="/products?category=women">WOMEN</Link>
-              </li>
+            <li>
+              <Link href="/products?category=women">WOMEN</Link>
+            </li>
 
-              <li>
-                <Link href="/kids">KIDS</Link>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      )}
+            <li>
+              <Link href="/kids">KIDS</Link>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </header>
   );
 }

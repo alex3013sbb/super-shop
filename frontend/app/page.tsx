@@ -54,7 +54,7 @@ export default function Home() {
             {slide.season}
           </p>
 
-          <button className="mt-10 w-fit bg-gray-200 px-10 py-4 text-sm font-bold hover:bg-gray-300">
+          <button className="mt-10 w-fit cursor-pointer bg-gray-200 px-10 py-4 text-sm font-bold hover:bg-gray-300">
             {slide.button} →
           </button>
         </div>
@@ -72,13 +72,13 @@ export default function Home() {
 
       <section className="mx-auto max-w-7xl px-8 pb-16">
         <div className="flex items-center gap-6 text-xl font-bold">
-          <button onClick={prevSlide}>←</button>
+          <button onClick={prevSlide} className="cursor-pointer">←</button>
 
           <span>
             {currentSlide + 1} / {slides.length}
           </span>
 
-          <button onClick={nextSlide}>→</button>
+          <button onClick={nextSlide} className="cursor-pointer">→</button>
         </div>
       </section>
     </main>

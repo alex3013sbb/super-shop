@@ -35,10 +35,10 @@ export default function ContactPage() {
                 <dt className="font-bold">E-Mail</dt>
                 <dd className="mt-0.5 text-gray-600">
                   <a
-                    href="mailto:info@supershop.de"
+                    href="mailto:info@supershop.ch"
                     className="hover:underline"
                   >
-                    info@supershop.de
+                    info@supershop.ch
                   </a>
                 </dd>
               </div>
@@ -52,7 +52,7 @@ export default function ContactPage() {
               />
               <div>
                 <dt className="font-bold">Telefon</dt>
-                <dd className="mt-0.5 text-gray-600">+49 123 456 7890</dd>
+                <dd className="mt-0.5 text-gray-600">+41 76 222 22 22</dd>
               </div>
             </div>
 
@@ -67,11 +67,11 @@ export default function ContactPage() {
                 <dd className="mt-0.5 text-gray-600 leading-relaxed">
                   Super Shop GmbH
                   <br />
-                  Am Beispielweg 10
+                  Musterstrasse 12
                   <br />
-                  10545 Berlin
+                  3011 Bern
                   <br />
-                  Deutschland
+                  Schweiz
                 </dd>
               </div>
             </div>

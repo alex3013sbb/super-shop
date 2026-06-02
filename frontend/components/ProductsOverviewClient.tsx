@@ -170,7 +170,7 @@ export default function ProductsOverviewClient({
             <button
               type="button"
               onClick={resetFilters}
-              className="text-xs text-gray-500 underline underline-offset-2 hover:text-black transition"
+              className="cursor-pointer text-xs text-gray-500 underline underline-offset-2 hover:text-black transition"
             >
               Zurücksetzen
             </button>
@@ -186,7 +186,7 @@ export default function ProductsOverviewClient({
                 <button
                   type="button"
                   onClick={() => toggleSection(sectionName)}
-                  className="flex w-full items-center justify-between py-4 text-left text-sm font-semibold transition hover:text-gray-900"
+                  className="flex w-full cursor-pointer items-center justify-between py-4 text-left text-sm font-semibold transition hover:text-gray-900"
                 >
                   <span>{sectionName}</span>
                   <ChevronDown
