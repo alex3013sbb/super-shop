@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+import { ChevronDown } from "lucide-react";
 import { useMemo, useState } from "react";
 import ProductCard from "@/components/ui/ProductCard";
 
@@ -46,15 +48,21 @@ function matchesCategory(
   return product.category === selectedCategory;
 }
 
+const expandableOptions = ["Größe", "Farbe", "Preis", "Kollektion"] as const;
+type ExpandableOption = (typeof expandableOptions)[number];
+
 export default function ProductsOverviewClient({
   products,
   selectedCategory,
   q,
 }: ProductsOverviewClientProps) {
   const [selectedSubcategories, setSelectedSubcategories] = useState<
-    ProductOverviewItem["subcategory"][]
+    Array<ProductOverviewItem["subcategory"]>
   >([]);
   const [sortBy, setSortBy] = useState<SortKey>("featured");
+  const [expandedSections, setExpandedSections] = useState<
+    Set<ExpandableOption>
+  >(new Set());
 
   const filteredAndSortedProducts = useMemo(() => {
     const normalizedQuery = q.toLowerCase();
@@ -101,6 +109,30 @@ export default function ProductsOverviewClient({
     });
   };
 
+  const toggleSection = (section: ExpandableOption) => {
+    setExpandedSections((current) => {
+      const next = new Set(current);
+      if (next.has(section)) {
+        next.delete(section);
+      } else {
+        next.add(section);
+      }
+      return next;
+    });
+  };
+
+  const buildCategoryLink = (category: string) => {
+    const params = new URLSearchParams();
+    if (category !== "all") {
+      params.set("category", category);
+    }
+    if (q) {
+      params.set("q", q);
+    }
+    const query = params.toString();
+    return query ? `/products?${query}` : "/products";
+  };
+
   return (
     <section className="grid gap-8 lg:grid-cols-[220px_1fr]">
       <aside className="border-b border-gray-200 pb-6 lg:border-b-0 lg:border-r lg:pr-8 lg:pb-0">
@@ -128,24 +160,81 @@ export default function ProductsOverviewClient({
         </div>
 
         <div className="divide-y divide-gray-200">
-          {["Größe", "Farbe", "Preis", "Kollektion"].map((sectionName) => (
-            <button
-              key={sectionName}
-              type="button"
-              className="flex w-full items-center justify-between py-4 text-left text-sm font-semibold"
-            >
-              <span>{sectionName}</span>
-              <span className="text-base leading-none">+</span>
-            </button>
-          ))}
+          {expandableOptions.map((sectionName) => {
+            const isExpanded = expandedSections.has(sectionName);
+            return (
+              <div key={sectionName}>
+                <button
+                  type="button"
+                  onClick={() => toggleSection(sectionName)}
+                  className="flex w-full items-center justify-between py-4 text-left text-sm font-semibold transition hover:text-gray-900"
+                >
+                  <span>{sectionName}</span>
+                  <ChevronDown
+                    size={16}
+                    strokeWidth={2}
+                    className={`transition-transform ${isExpanded ? "rotate-180" : ""}`}
+                  />
+                </button>
+                {isExpanded && (
+                  <div className="pb-4 text-sm text-gray-600">
+                    <ul className="space-y-2">
+                      <li>
+                        <label className="flex cursor-pointer items-center gap-2">
+                          <input type="checkbox" className="h-3 w-3 rounded" />{" "}
+                          Option 1
+                        </label>
+                      </li>
+                      <li>
+                        <label className="flex cursor-pointer items-center gap-2">
+                          <input type="checkbox" className="h-3 w-3 rounded" />{" "}
+                          Option 2
+                        </label>
+                      </li>
+                      <li>
+                        <label className="flex cursor-pointer items-center gap-2">
+                          <input type="checkbox" className="h-3 w-3 rounded" />{" "}
+                          Option 3
+                        </label>
+                      </li>
+                    </ul>
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       </aside>
 
       <div>
-        <div className="mb-7 flex items-center justify-between gap-4">
-          <h1 className="text-4xl font-black uppercase tracking-tight">
-            {title}
-          </h1>
+        <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <h1 className="mb-4 text-4xl font-black uppercase tracking-tight">
+              {title}
+            </h1>
+            <div className="flex flex-wrap gap-2">
+              {[
+                ["all", "ALL"],
+                ["men", "MEN"],
+                ["women", "WOMEN"],
+              ].map(([key, label]) => {
+                const isActive = selectedCategory === key;
+                return (
+                  <Link
+                    key={key}
+                    href={buildCategoryLink(key)}
+                    className={`rounded-full border px-4 py-2 text-xs font-bold tracking-wider transition ${
+                      isActive
+                        ? "border-black bg-black text-white"
+                        : "border-gray-300 bg-white text-black hover:border-black"
+                    }`}
+                  >
+                    {label}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
 
           <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
             <label htmlFor="sort-by">Sortieren nach</label>
