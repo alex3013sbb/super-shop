@@ -1,17 +1,29 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import {
-  Menu,
-  Search,
-  User,
-  Heart,
-  ShoppingBag,
-} from "lucide-react";
+import { type FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
+import { Menu, Search, User, Heart, ShoppingBag } from "lucide-react";
+import { useFavorites } from "@/hooks/useFavorites";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const router = useRouter();
+  const { favorites } = useFavorites();
+
+  const handleSearchSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const query = searchTerm.trim();
+
+    if (!query) {
+      router.push("/products");
+      return;
+    }
+
+    router.push(`/products?q=${encodeURIComponent(query)}`);
+  };
 
   return (
     <header className="border-b border-gray-200 bg-white">
@@ -20,14 +32,12 @@ export default function Header() {
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle menu"
+            className="cursor-pointer"
           >
             <Menu size={20} strokeWidth={1.7} />
           </button>
 
-          <Link
-            href="/"
-            className="text-sm font-bold uppercase tracking-wider"
-          >
+          <Link href="/" className="text-sm font-bold uppercase tracking-wider">
             SUPER SHOP
           </Link>
         </div>
@@ -36,22 +46,24 @@ export default function Header() {
           <input
             type="text"
             placeholder="Suche nach Produkt, Kollektion..."
-            className="w-72 border-none bg-transparent text-xs outline-none placeholder:text-gray-400"
+            value={searchTerm}
+            onChange={(event) => setSearchTerm(event.target.value)}
+            className="w-72 border-none bg-transparent text-xs outline-none placeholder:text-gray-400 transition-all duration-200 focus:w-96"
           />
-          <Search
-            size={17}
-            strokeWidth={1.7}
-            className="text-gray-500"
-          />
-        </div>
+        </form>
 
         <div className="flex items-center gap-5 text-gray-700">
           <Link href="/login">
             <User size={20} strokeWidth={1.7} />
           </Link>
 
-          <Link href="/favorites">
+          <Link href="/favorites" className="relative">
             <Heart size={20} strokeWidth={1.7} />
+            {favorites.length > 0 && (
+              <span className="absolute -right-1.5 -top-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-black text-[9px] font-bold text-white">
+                {favorites.length > 9 ? "9+" : favorites.length}
+              </span>
+            )}
           </Link>
 
           <Link href="/cart">
@@ -68,9 +80,9 @@ export default function Header() {
                 <Link href="/men">MEN</Link>
               </li>
 
-              <li>
-                <Link href="/women">WOMEN</Link>
-              </li>
+            <li>
+              <Link href="/products?category=women">WOMEN</Link>
+            </li>
 
             </ul>
           </nav>

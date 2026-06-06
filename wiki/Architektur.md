@@ -39,6 +39,85 @@
 └─────────────────────────────────────────────────┘
 ```
 
+### Domain-Modell (UML)
+
+Das folgende UML-Diagramm beschreibt das geplante E-Commerce-Datenmodell fuer filterbare Produkte (Groesse, Farbe, Preis, Kollektion) und die Beziehung zu Bestellungen.
+
+```mermaid
+classDiagram
+direction LR
+
+class Category {
+  +int id
+  +string name
+}
+
+class Collection {
+  +int id
+  +string name
+  +string season
+  +int year
+  +boolean active
+}
+
+class Product {
+  +int id
+  +string name
+  +string description
+  +decimal basePrice
+  +string imageUrl
+  +boolean active
+  +datetime createdAt
+  +datetime updatedAt
+}
+
+class Size {
+  +int id
+  +string code
+  +int sortOrder
+}
+
+class Color {
+  +int id
+  +string name
+  +string hexCode
+  +int sortOrder
+}
+
+class ProductVariant {
+  +int id
+  +string sku
+  +decimal variantPrice
+  +int stockQty
+  +boolean active
+}
+
+class Order {
+  +int id
+}
+
+class OrderedProductInfo {
+  +int id
+  +int amount
+  +decimal priceInOrderMoment
+}
+
+Category "1" --> "0..*" Product : category_id
+Collection "1" --> "0..*" Product : collection_id
+Product "1" --> "0..*" ProductVariant : product_id
+Size "1" --> "0..*" ProductVariant : size_id
+Color "1" --> "0..*" ProductVariant : color_id
+
+Order "1" --> "0..*" OrderedProductInfo : order_id
+Product "1" --> "0..*" OrderedProductInfo : product_id
+ProductVariant "0..1" --> "0..*" OrderedProductInfo : product_variant_id
+```
+
+Kurzdefinition:
+
+- **Product**: Stammdaten eines Artikels (Name, Beschreibung, Kategorie, Basispreis, Bild).
+- **ProductVariant**: Kaufbare Variante eines Produkts (z. B. Groesse/Farbe), inklusive SKU, Bestand und optionalem Variantenpreis.
+
 ### Frontend-Architektur (Next.js 16)
 
 ```txt
