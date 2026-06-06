@@ -42,7 +42,10 @@ export default function Header() {
           </Link>
         </div>
 
-        <div className="hidden items-center gap-2 md:flex">
+        <form
+          onSubmit={handleSearchSubmit}
+          className="hidden items-center gap-2 md:flex"
+        >
           <input
             type="text"
             placeholder="Suche nach Produkt, Kollektion..."
@@ -50,6 +53,10 @@ export default function Header() {
             onChange={(event) => setSearchTerm(event.target.value)}
             className="w-72 border-none bg-transparent text-xs outline-none placeholder:text-gray-400 transition-all duration-200 focus:w-96"
           />
+
+          <button type="submit" aria-label="Suche starten">
+            <Search size={16} strokeWidth={1.7} className="text-gray-500" />
+          </button>
         </form>
 
         <div className="flex items-center gap-5 text-gray-700">
@@ -59,6 +66,7 @@ export default function Header() {
 
           <Link href="/favorites" className="relative">
             <Heart size={20} strokeWidth={1.7} />
+
             {favorites.length > 0 && (
               <span className="absolute -right-1.5 -top-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-black text-[9px] font-bold text-white">
                 {favorites.length > 9 ? "9+" : favorites.length}
@@ -77,13 +85,16 @@ export default function Header() {
           <nav className="px-8 py-6">
             <ul className="space-y-3 text-sm font-medium uppercase tracking-wide">
               <li>
-                <Link href="/men">MEN</Link>
+                <Link href="/men" onClick={() => setIsMenuOpen(false)}>
+                  MEN
+                </Link>
               </li>
 
-            <li>
-              <Link href="/products?category=women">WOMEN</Link>
-            </li>
-
+              <li>
+                <Link href="/products?category=women" onClick={() => setIsMenuOpen(false)}>
+                  WOMEN
+                </Link>
+              </li>
             </ul>
           </nav>
         </div>
