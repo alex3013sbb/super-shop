@@ -12,7 +12,6 @@ export default function ReturnsPage() {
         Nicht das Richtige? Kein Problem — wir machen die Rückgabe so einfach wie möglich.
       </p>
 
-      {/* Policy highlight */}
       <div className="mb-10 rounded-lg border border-black bg-black px-6 py-5 text-white">
         <p className="text-lg font-bold">30 Tage kostenlose Rückgabe</p>
         <p className="mt-1 text-sm text-gray-300">
@@ -20,7 +19,6 @@ export default function ReturnsPage() {
         </p>
       </div>
 
-      {/* Steps */}
       <section className="mb-10">
         <h2 className="mb-5 text-sm font-bold uppercase tracking-wide">So funktioniert es</h2>
         <ol className="space-y-5">
@@ -59,7 +57,6 @@ export default function ReturnsPage() {
         </ol>
       </section>
 
-      {/* Conditions */}
       <section className="mb-10 space-y-4 text-sm text-gray-600">
         <h2 className="text-sm font-bold uppercase tracking-wide text-black">
           Rückgabebedingungen
@@ -73,7 +70,6 @@ export default function ReturnsPage() {
         </ul>
       </section>
 
-      {/* Refund info */}
       <section className="mb-10 text-sm text-gray-600">
         <h2 className="mb-2 text-sm font-bold uppercase tracking-wide text-black">
           Rückerstattung

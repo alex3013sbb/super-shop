@@ -12,7 +12,6 @@ export default function ShippingPage() {
         Alle Infos zu Lieferzeiten, Kosten und Versandpartnern.
       </p>
 
-      {/* Delivery options */}
       <section className="mb-10">
         <h2 className="mb-4 text-sm font-bold uppercase tracking-wide">Lieferoptionen</h2>
         <div className="overflow-hidden rounded-lg border border-gray-200">
@@ -50,7 +49,6 @@ export default function ShippingPage() {
         </div>
       </section>
 
-      {/* Info blocks */}
       <section className="mb-10 space-y-6 text-sm text-gray-600">
         <div>
           <h2 className="mb-2 text-sm font-bold uppercase tracking-wide text-black">

@@ -10,7 +10,6 @@ export default function AboutPage() {
         Wir sind Super Shop — Mode, die bewegt.
       </p>
 
-      {/* Unternehmen */}
       <section id="unternehmen" className="mb-14 scroll-mt-24">
         <h2 className="mb-4 text-xl font-bold uppercase tracking-wide">Unternehmen</h2>
         <div className="space-y-4 text-sm leading-relaxed text-gray-600">
@@ -34,7 +33,6 @@ export default function AboutPage() {
 
       <hr className="mb-14 border-gray-200" />
 
-      {/* Nachhaltigkeit */}
       <section id="nachhaltigkeit" className="mb-14 scroll-mt-24">
         <h2 className="mb-4 text-xl font-bold uppercase tracking-wide">Nachhaltigkeit</h2>
         <div className="space-y-4 text-sm leading-relaxed text-gray-600">
@@ -57,7 +55,6 @@ export default function AboutPage() {
 
       <hr className="mb-14 border-gray-200" />
 
-      {/* Karriere */}
       <section id="karriere" className="mb-14 scroll-mt-24">
         <h2 className="mb-4 text-xl font-bold uppercase tracking-wide">Karriere</h2>
         <div className="space-y-4 text-sm leading-relaxed text-gray-600">
@@ -88,7 +85,6 @@ export default function AboutPage() {
 
       <hr className="mb-14 border-gray-200" />
 
-      {/* Presse */}
       <section id="presse" className="scroll-mt-24">
         <h2 className="mb-4 text-xl font-bold uppercase tracking-wide">Presse</h2>
         <div className="space-y-4 text-sm leading-relaxed text-gray-600">
