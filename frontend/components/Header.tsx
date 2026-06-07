@@ -85,7 +85,7 @@ export default function Header() {
           <nav className="px-8 py-6">
             <ul className="space-y-3 text-sm font-medium uppercase tracking-wide">
               <li>
-                <Link href="/men" onClick={() => setIsMenuOpen(false)}>
+                <Link href="/products?category=men" onClick={() => setIsMenuOpen(false)}>
                   MEN
                 </Link>
               </li>
