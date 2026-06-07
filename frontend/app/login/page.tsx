@@ -3,8 +3,10 @@
 import Link from "next/link";
 import { useState } from "react";
 import { login } from "@/lib/api/auth";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -55,12 +57,13 @@ export default function LoginPage() {
               className="w-full border px-4 py-3"
             />
 
-            <button
-              type="submit"
-              className="w-full bg-black py-3 text-white"
-            >
-              Anmelden
-            </button>
+          <button
+            type="submit"
+            onClick={() => router.push("/")}
+            className="flex w-full items-center justify-center gap-1.5 rounded border border-gray-300 bg-gray-100 px-4 py-2.5 text-xs font-semibold uppercase tracking-wider transition hover:border-black hover:bg-white"
+          >
+            Anmelden
+          </button>
           </form>
 
           {error && (
@@ -90,7 +93,7 @@ export default function LoginPage() {
 
           <Link
             href="/register"
-            className="inline-block bg-gray-200 px-8 py-3 text-sm"
+            className="block w-full bg-gray-100 py-3 text-center"
           >
             Konto erstellen
           </Link>
