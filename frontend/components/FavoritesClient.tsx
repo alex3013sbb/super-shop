@@ -10,7 +10,6 @@ export default function FavoritesClient() {
 
   return (
     <div className="mx-auto max-w-7xl px-8 py-10">
-      {/* ── Page header ── */}
       <div className="mb-6 flex items-start justify-between">
         <div>
           <h1 className="text-3xl font-black uppercase tracking-tight">
@@ -33,7 +32,6 @@ export default function FavoritesClient() {
         )}
       </div>
 
-      {/* ── Product grid ── */}
       {favorites.length > 0 ? (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {favorites.map((item) => (

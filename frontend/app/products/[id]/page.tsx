@@ -33,16 +33,6 @@ export default function ProductDetailPage() {
 
   const product = mockCatalog.products.find((item) => item.id === id);
 
-  const images = product
-    ? [
-        product.imageUrl,
-        product.imageUrl,
-        product.imageUrl,
-      ]
-    : [];
-
-  const [selectedImage, setSelectedImage] = useState(images[0]);
-
   if (!product) {
     return (
       <main className="mx-auto max-w-7xl px-8 py-12">
@@ -57,6 +47,14 @@ export default function ProductDetailPage() {
     );
   }
 
+  const images = [
+    product.imageUrl,
+    product.imageUrl,
+    product.imageUrl,
+  ];
+
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+
   const colorName =
     colorLabels[product.availableColors[0]] ?? product.availableColors[0];
 
@@ -66,18 +64,24 @@ export default function ProductDetailPage() {
         <Link href="/" className="hover:text-black">
           Home
         </Link>
+
         <span>/</span>
+
         <Link href="/products" className="hover:text-black">
           Products
         </Link>
+
         <span>/</span>
+
         <Link
           href={`/products?category=${product.category}`}
           className="capitalize hover:text-black"
         >
           {product.category}
         </Link>
+
         <span>/</span>
+
         <span className="text-black">{product.name}</span>
       </div>
 
@@ -87,23 +91,26 @@ export default function ProductDetailPage() {
             <button
               key={`${image}-${index}`}
               type="button"
-              onClick={() => setSelectedImage(image)}
-              className={`h-24 w-20 overflow-hidden border bg-gray-100 ${
-                selectedImage === image ? "border-black" : "border-gray-200"
+              onClick={() => setSelectedImageIndex(index)}
+              className={`h-24 w-20 overflow-hidden border-2 bg-gray-100 transition-all duration-200 ${
+                selectedImageIndex === index
+                  ? "border-[red] shadow-lg"
+                  : "border-gray-200 hover:border-gray-400"
               }`}
             >
               <img
                 src={image}
-                alt={product.name}
+                alt={`${product.name} ${index + 1}`}
                 className="h-full w-full object-cover"
               />
             </button>
           ))}
         </div>
 
+
         <div className="flex items-center justify-center bg-gray-100">
           <img
-            src={selectedImage}
+            src={images[selectedImageIndex]}
             alt={product.name}
             className="max-h-[620px] w-full object-contain"
           />
@@ -136,7 +143,9 @@ export default function ProductDetailPage() {
           <div className="mt-6">
             <div className="mb-3 flex items-center justify-between text-sm">
               <span className="font-semibold">Grösse:</span>
-              <span className="text-gray-500 underline">Grössentabelle</span>
+              <span className="text-gray-500 underline">
+                Grössentabelle
+              </span>
             </div>
 
             <div className="flex gap-2">
@@ -171,8 +180,10 @@ export default function ProductDetailPage() {
               <summary className="cursor-pointer font-semibold">
                 Beschreibung
               </summary>
+
               <p className="mt-3 text-gray-600">
-                Dieses Produkt gehört zur Kollektion {product.collection}.
+                Dieses Produkt gehört zur Kollektion{" "}
+                {product.collection}.
               </p>
             </details>
 
@@ -180,6 +191,7 @@ export default function ProductDetailPage() {
               <summary className="cursor-pointer font-semibold">
                 Material & Pflege
               </summary>
+
               <p className="mt-3 text-gray-600">
                 Pflegeleichtes Material. Maschinenwäsche bei 30°C.
               </p>
@@ -189,6 +201,7 @@ export default function ProductDetailPage() {
               <summary className="cursor-pointer font-semibold">
                 Versand & Rückgabe
               </summary>
+
               <p className="mt-3 text-gray-600">
                 Standardversand 2–4 Werktage. Rückgabe innerhalb von 14 Tagen.
               </p>

@@ -13,7 +13,6 @@ export default function ContactPage() {
       </h1>
 
       <div className="grid gap-16 lg:grid-cols-2">
-        {/* ── Left: contact info ── */}
         <div>
           <h2 className="mb-3 text-base font-bold uppercase tracking-wide">
             Wir sind für dich da
@@ -78,7 +77,6 @@ export default function ContactPage() {
           </dl>
         </div>
 
-        {/* ── Right: form ── */}
         <div>
           <ContactForm />
         </div>

@@ -160,7 +160,6 @@ export default function ProductsOverviewClient({
 
   return (
     <section className="grid gap-8 lg:grid-cols-[220px_1fr]">
-      {/* ── Sidebar ── */}
       <aside className="border-b border-gray-200 pb-6 lg:border-b-0 lg:border-r lg:pb-0 lg:pr-8">
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-bold uppercase tracking-[0.12em]">
@@ -176,8 +175,6 @@ export default function ProductsOverviewClient({
             </button>
           )}
         </div>
-
-        {/* expandable filter sections */}
         <div className="mt-4 divide-y divide-gray-200">
           {expandableSections.map((sectionName) => {
             const isExpanded = expandedSections.has(sectionName);
@@ -294,7 +291,6 @@ export default function ProductsOverviewClient({
         </div>
       </aside>
 
-      {/* ── Main content ── */}
       <div>
         <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div>
