@@ -1,9 +1,36 @@
 services:
-  postgres:
-    image: 'postgres:latest'
+
+  postgres-db:
+    image: postgres:15-alpine
+    container_name: alexshop-db
     environment:
-      - 'POSTGRES_DB=alexshop'
-      - 'POSTGRES_PASSWORD=secret'
-      - 'POSTGRES_USER=alex'
+      POSTGRES_DB: alexshop
+      POSTGRES_USER: alex
+      POSTGRES_PASSWORD: secret
     ports:
-      - '5432:5432'
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - shop-network
+
+  backend-app:
+    build: .
+    container_name: alexshop-backend
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/alexshop
+      SPRING_DATASOURCE_USERNAME: alex
+      SPRING_DATASOURCE_PASSWORD: secret
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      - postgres-db
+    networks:
+      - shop-network
+
+volumes:
+  pgdata:
+
+networks:
+  shop-network:
