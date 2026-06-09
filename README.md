@@ -150,6 +150,12 @@ Für detaillierte Informationen siehe /wiki/Technologiestack.md.
 
 Für detaillierte Informationen siehe /wiki/Architektur.md.
 
+## Code-Konvention
+
+Wir verwenden das **Single Responsibility Principle (SRP)** als primäre Code-Konvention — jede Klasse, Funktion und Komponente hat genau eine Verantwortung.
+
+Für detaillierte Informationen und Beispiele siehe [/wiki/Code-Konvektion(SRP).md](</wiki/Code-Konvektion(SRP).md>).
+
 ## Development Workflow
 
 ### Git-Workflow (Gitflow)
