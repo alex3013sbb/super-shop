@@ -41,7 +41,7 @@ export default function CollectionsPage() {
               </p>
 
               <Link
-                href="/men"
+                href={`/products?category=${collection.title.toLowerCase()}`}
                 className="mt-5 inline-block bg-gray-200 px-8 py-3 text-md font-bold hover:bg-gray-300"
               >
                 Jetzt Entdecken →
