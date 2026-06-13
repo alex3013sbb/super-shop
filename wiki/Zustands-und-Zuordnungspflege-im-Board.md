@@ -77,6 +77,8 @@ Die wichtigsten Projektbereiche wurden im Board abgebildet:
 
 Trotz der grundsätzlich guten Pflege traten gelegentlich Probleme auf.
 
+> Andere Verbesserungs vorschläge sind in wiki/Retrospektive-Verbesserungen.md dokumentiert.
+
 ### Status wurde nicht immer sofort aktualisiert
 
 Einzelne Tasks blieben zeitweise auf einem alten Status, obwohl die Arbeit bereits begonnen oder abgeschlossen war.
@@ -125,13 +127,3 @@ Eine konsistente Definition of Done hätte beispielsweise folgende Punkte enthal
 ### Commit-Nachrichten waren teilweise zu kurz
 
 Die Commit-Nachrichten waren nicht immer ausreichend beschreibend.
-
-Beispiele für zu kurze Commit-Nachrichten:
-
-```text
-fix
-update
-changes
-frontend
-test
-```
