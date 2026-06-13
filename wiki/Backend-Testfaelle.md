@@ -5,14 +5,17 @@
 ### Ziel
 Überprüfen, ob ein neuer Status (z. B. "NEW") über den StatusService erfolgreich validiert, gemappt und in der Datenbank gespeichert werden kann.
 
+
 ### Voraussetzung
 - Der eingegebene Statusname existiert noch nicht in der Datenbank (`existsByName` liefert `false`).
 - Die Services und Repositories sind korrekt initialisiert (Mockito Mocks).
+
 
 ### Testschritte
 1. Erstellen eines `StatusDTO` mit dem Namen `"NEW"`.
 2. Aufruf der Methode `statusService.addStatus(givenStatusDTO)`.
 3. Überprüfung der internen Mock-Interaktionen (`statusRepository.save`).
+
 
 ### Erwartetes Ergebnis
 - Die Methode gibt ein `Optional<StatusDTO>` zurück, das nicht leer ist (`isPresent() == true`).
